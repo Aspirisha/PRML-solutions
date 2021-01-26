@@ -1,0 +1,27 @@
+\documentclass[fleqn]{article}
+
+\usepackage[russian]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{fullpage}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amsmath,amssymb}
+\usepackage{mathbbol}
+\DeclareMathOperator{\E}{\mathbb{E}}
+\DeclareMathOperator{\V}{\mathbb{Var}}
+\DeclareMathOperator{\B}{\mathbb{Bias}}
+\begin{document}
+
+\section*{Problem 3.2}
+
+So we first need to prove that matrix $\Psi = \Phi(\Phi^\top\Phi)^{-1}\Phi^\top$ projects any N-dimensional vector $v$ onto the subspace spanned by M columns of $\Phi$ (lets denote this subspace as $S(\Phi)$). Here we just assume $(\Phi^\top\Phi)^{-1}$ exists (i.e. $\Phi^\top\Phi$ is invertible) since it is a part of the definition of the matrix given in the problem condition.
+
+Let us consider any N-dimensional vector $v$. We need to prove that there exist $\alpha_1\ldots\alpha_M \in \mathbb{R}$ such that $\Psi v = \alpha_1\varphi_1(D) + \ldots + \alpha_M\varphi_M(D)$. If we denote $\alpha = (\alpha_1,\ldots,\alpha_M)^\top$, then we need to prove there exists M-dimensional vector $\alpha$ such that $\Phi\cdot\alpha = \Psi v$. We notice now that $\alpha = (\Phi^\top\Phi)^{-1}\Phi^\top v$ is the very vector we are looking for, so it exists, so we proved that $\Psi$ indeed projects $v$ onto the subspace of columns of $\Phi$. 
+
+Lets us now consider $w_{ML} = (\Phi^\top\Phi)^{-1}\Phi^\top t$. We need to prove $y = \Phi w_{ML}$ is an orthogonal projection of $t$ onto the subspace of columns of $\Phi$. This means, we need to prove $ y - t \hspace*{0.05in} \bot \hspace*{0.05in} S(\Phi) $. This is the same as proving that $\Phi(\Phi^\top\Phi)^{-1}\Phi^\top t - t \bot S(\Phi)$.
+
+Consider left part of the statement and multiply it by $\Phi^\top$. This gives us  $\Phi^\top (\Phi(\Phi^\top\Phi)^{-1}\Phi^\top t - t) = (\Phi^\top\Phi)(\Phi^\top\Phi)^{-1}\Phi^\top t - \Phi t = \mathbb{0}$. So, we see that all the columns of $\Phi$ are orthogonal with $\Phi(\Phi^\top\Phi)^{-1}\Phi^\top t - t$, which means $\Phi(\Phi^\top\Phi)^{-1}\Phi^\top t$ is an orthogonal projection of $t$ onto $S(\Phi)$.
+
+
+
+\end{document}
