@@ -20,8 +20,37 @@ Let us consider any N-dimensional vector $v$. We need to prove that there exist 
 
 Lets us now consider $w_{ML} = (\Phi^\top\Phi)^{-1}\Phi^\top t$. We need to prove $y = \Phi w_{ML}$ is an orthogonal projection of $t$ onto the subspace of columns of $\Phi$. This means, we need to prove $ y - t \hspace*{0.05in} \bot \hspace*{0.05in} S(\Phi) $. This is the same as proving that $\Phi(\Phi^\top\Phi)^{-1}\Phi^\top t - t \bot S(\Phi)$.
 
-Consider left part of the statement and multiply it by $\Phi^\top$. This gives us  $\Phi^\top (\Phi(\Phi^\top\Phi)^{-1}\Phi^\top t - t) = (\Phi^\top\Phi)(\Phi^\top\Phi)^{-1}\Phi^\top t - \Phi t = \mathbb{0}$. So, we see that all the columns of $\Phi$ are orthogonal with $\Phi(\Phi^\top\Phi)^{-1}\Phi^\top t - t$, which means $\Phi(\Phi^\top\Phi)^{-1}\Phi^\top t$ is an orthogonal projection of $t$ onto $S(\Phi)$.
+Consider left part of the statement and multiply it by $\Phi^\top$. This gives us  $\Phi^\top (\Phi(\Phi^\top\Phi)^{-1}\Phi^\top t - t) = (\Phi^\top\Phi)(\Phi^\top\Phi)^{-1}\Phi^\top t - \Phi^\top t = \mathbb{0}$. So, we see that all the columns of $\Phi$ are orthogonal with $\Phi(\Phi^\top\Phi)^{-1}\Phi^\top t - t$, which means $\Phi(\Phi^\top\Phi)^{-1}\Phi^\top t$ is an orthogonal projection of $t$ onto $S(\Phi)$.
 
+\section*{Problem 3.3}
 
+Since $w^*$ is extremum, we can equate $E_D$ gradient to zero:
+\begin{align}
+\nabla E_D = -\sum\limits_{n=1}^Nr_n(t_n - w^\top\varphi(x_n))\varphi^\top(x_n) = 0 
+\label{eq:defxyz}
+\end{align}
+
+Let us consider $R = \begin{pmatrix}
+r_1 & 0 & ... & 0 \\
+0 & r_2 & ... & 0 \\
+0 & 0 & ... & 0 \\
+0 & 0 & ... & r_n
+\end{pmatrix}$
+
+We can rewrite equation $\ref{eq:defxyz}$ in the following way:
+
+\begin{align}
+\nabla E_D = -\Phi^\top R t + \Phi^\top R \Phi w = 0
+\end{align}
+
+Thus we obtain 
+
+\begin{align}
+w^* = (\Phi^\top R \Phi) ^{-1}\Phi^\top R t
+\end{align}
+
+We can consider the matrix R, one the one hand, as inverse data-dependent noise variance: different $x_i$ will have different correspondent $r_i$, and the smaller $r_i$ is, the smaller is the impact of $i_{th}$ sample. So, $r_i$ can be used as our confidence in the $t_i$ value.
+
+On the other hand, at least when $r_i$ is integer, it can be considered as the number of times sample $(x_i, t_i)$ was present in the dataset.
 
 \end{document}
