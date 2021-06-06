@@ -53,4 +53,17 @@ We can consider the matrix R, one the one hand, as inverse data-dependent noise 
 
 On the other hand, at least when $r_i$ is integer, it can be considered as the number of times sample $(x_i, t_i)$ was present in the dataset.
 
+
+
+\section*{Problem 3.4}
+
+Let us average error function over all possible noise values, i.e. let us compute it's expected value with respect to added noise $\{\epsilon_i\}$. Lets us denote $x_n' = x_n + \epsilon_n$ - input variable with added noise.
+\begin{align}
+\E[E_D] & = \E[\frac{1}{2}\sum\limits_{n=1}^N\{y(x_n',w) - t_n\}^2] = \\ & = \E[\frac{1}{2}\sum\limits_{n=1}^N\{w_0 + \sum\limits_{i=1}^D w_i (x_{ni} + \epsilon_{ni}) - t_n\}^2 = \\ & = \E[\frac{1}{2}\sum\limits_{n=1}^N\{w_0 + \sum\limits_{i=1}^D w_i (x_{ni} + \epsilon_{ni}) - t_n\} = \\ & = \frac{1}{2}\sum\limits_{n=1}^N\E[\{w_0 -t_n + \sum\limits_{i=1}^D w_i (x_{ni} + \epsilon_{ni}) \}^2] = \\
+& = \frac{1}{2}\sum\limits_{n=1}^N\E[(w_0-t_n)^2 + (w_0-t_n)\sum\limits_{i=1}^D w_i(x_{ni}+\epsilon_{ni}) + \sum\limits_{i,j=1}^Dw_iw_j(x_{ni}+\epsilon_{ni})(x_{nj}+\epsilon_{nj})] = \\ & = \frac{1}{2}\sum\limits_{n=1}^N\{(w_0-t_n)^2 + (w_0-t_n)\sum\limits_{i=1}^D w_ix_{ni} + \sum\limits_{i,j=1}^Dw_iw_j(x_{ni}x_{nj} + \delta_{ij}\sigma^2) \} = \\
+& = \frac{1}{2}\sum\limits_{n=1}^N\{y(x_n,w) - t_n\}^2 + \frac{N \sigma^2}{2}w^\top w
+\end{align}
+
+So, as expected, we see that error function, averaged over noise values, gives us weight-decayed sum-of-squares error function over noise-free input variables with omitted bias in regularization term, so minimizing the latter gives the same result as minimizing the former.  
+
 \end{document}
