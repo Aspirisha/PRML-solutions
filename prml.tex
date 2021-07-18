@@ -8,6 +8,7 @@
 \usepackage{amsmath,amssymb}
 \usepackage{mathbbol}
 \usepackage{chngcntr}
+\usepackage{hyperref}
 \DeclareMathOperator{\E}{\mathbb{E}}
 \DeclareMathOperator{\V}{\mathbb{Var}}
 \DeclareMathOperator{\B}{\mathbb{Bias}}
@@ -78,5 +79,69 @@ Suppose we want to minimize $E_D(w)$ subject to $\sum\limits_{j=1}^M|w_j|^q \le 
 This is equivalent to minimizing Lagrange function $L(w, \lambda) = E_D(w) + \lambda'(\sum\limits_{j=1}^M(|w_j|^q - \eta)$ under conditions that $\lambda' \ge 0$, $\sum\limits_{j=1}^M|w_j|^q \le \eta$ and $\lambda'(\sum\limits_{j=1}^M|w_j|^q - \eta) = 0$. When we use regularization, we suppose we only vary $\{w_j\}$ while keeping $\lambda$ fixed. So we can substitute $\lambda' = \frac{\lambda}{2}$ and pay no attention to $\eta$ since it is constant, and try to minimize the Lagrangian which now takes form of $E_D(w) + \frac{\lambda}{2}(\sum\limits_{j=1}^M(|w_j|^q)$, and this is exactly the regularized least squares error function. 
 
 To find the dependence between $\eta$ and $w$ we note that for optimal solution $\{w_j^*\}$ we have $\eta = \sum\limits_{j=1}^M(|w_j^*|^q)$.
+
+As of dependence between $\eta$ and $\lambda$ we can see that the greater $\lambda$ is, the more is regularization effect and so the less will be $\eta$. 
+
+\section*{Problem 3.6}
+
+This problem looks simple, but in fact to understand it deeply one need to perform certain actions. First of all, we will write down the log-likelihood of the dataset with given W:
+
+\begin{align}
+L(D) = \prod\limits_{n=1}^N (2\pi)^-{\frac{k}{2}}|\Sigma|^{-\frac{1}{2}}\exp(-\frac{1}{2}(t_n - W^\top\varphi(X_n))^\top\Sigma^{-1}(t_n - W^\top\varphi(X_n))
+\end{align}
+
+\begin{align}
+\log L(D) = -\frac{kN}{2}\log(2\pi) -\frac{N}{2}|\Sigma| - \frac{1}{2} \sum\limits_{n=1}^N(t_n - W^\top\varphi(X_n))^\top\Sigma^{-1}(t_n - W^\top\varphi(X_n))
+\end{align}
+
+We now want to find the maximum of the log-likelihood with respect to W to find $W_{ML}$. To achieve this, we will use matrix derivatives notation (see \url{https://en.wikipedia.org/wiki/Matrix_calculus})
+
+In fact, we see that taking derivative of scalar with respect to matrix gives us a matrix of the same size:
+
+$\frac{\partial \log L(D)}{\partial W} = \begin{pmatrix}
+\frac{\partial \log L(D)}{\partial W_{11}} & \frac{\partial \log L(D)}{\partial W_{12}} & ... & \frac{\partial \log L(D)}{\partial W_{1K}} \\
+\frac{\partial \log L(D)}{\partial W_{21}} & \frac{\partial \log L(D)}{\partial W_{22}} & ... & \frac{\partial \log L(D)}{\partial W_{2K}} \\
+... & ... & ... & ... \\
+\frac{\partial \log L(D)}{\partial W_{M1}} & \frac{\partial \log L(D)}{\partial W_{M2}} & ... & \frac{\partial \log L(D)}{\partial W_{MK}}
+\end{pmatrix}$
+
+
+To get the work done, we first prove following identity:
+
+\begin{align}
+\frac{\partial (Xa + b)^\top C (Xa + b)}{\partial X} = (C + C^\top)(Xa + b)a^\top
+\end{align}
+
+Here, $C$ is a square matrix of some size $N \times N$, $b$ is a vector of size $N$, $a$ is a vector of size $M$, and $X$ is $M \times N$ matrix.  
+
+To prove it, let's use write down the numerator in non-matrix form:
+
+\begin{align}
+(Xa + b)^\top C (Xa + b) = \sum\limits_{l=1}^N(\sum\limits_{k=1}^N(\sum\limits_{\beta=1}^MX_{l\beta}a_\beta + b_l)C_{kl})(\sum\limits_{\gamma=1}^NX_{k\gamma}a_\gamma + b_k)
+\end{align}
+
+Taking now derivative of this with respect to $X_{ij}$ we get:
+
+\begin{align}
+\frac{\partial (Xa + b)^\top C (Xa + b)}{\partial X_{ij}} &= \sum\limits_{k=1}^Na_jC_{ki} (X_ka + b_k) + \sum\limits_{l=1}^N(X_la + b_l)C_{il}a_j = \\ & = a_j[{C^i}^\top(Xa + b) + (Xa + b)^\top C_i] =\\ & = (C + C^\top)_i(Xa + b)a_j
+\end{align}
+
+So, we see that $\frac{\partial (Xa + b)^\top C (Xa + b)}{\partial X} = (C + C^\top)(Xa + b)a^\top$.
+
+Now, returning to the original problem, we have 
+
+\begin{align}\frac{\partial \log L(D)}{\partial W} & = -\frac{1}{2}\sum\limits_{n=1}^N(\Sigma^{-1} + {\Sigma^{-1}}^{\top})(t_n - W^\top \varphi(X_n))\varphi(X_n)^\top = \\ & = \Sigma^{-1} (T^\top - W^\top \varPhi^\top)\varPhi = 0
+\end{align}
+
+Just a reminder, $T$ is a $N \times K$ matrix, $\varPhi(X)$ is a $N \times M$ matrix, and $W$ is $M \times K$ matrix. 
+
+So assigning this to 0 and reducing $\Sigma^{-1}$ we get $T^\top \varPhi = W_{ML}^\top \varPhi^\top \varPhi$ and so $W_{ML} =  (\varPhi^\top \varPhi)^{-1}\varPhi^\top T$ which shows us that indeed $i$-th column of $W_{ML}$ has the same well known form of $W_{ML_i}=(\varPhi^\top \varPhi)^{-1}\varPhi^\top t_i$ and $W_{ML}$ is independent of $\Sigma$.
+
+Now let us consider 
+
+\begin{align}\frac{\partial \log L(D)}{\partial \Sigma^{-1}} & = -\frac{N}{2}\frac{\partial\log|\Sigma|}{\partial\Sigma^{-1}} - \frac{1}{2}\sum\limits_{n=1}^N(t_n - W_{ML}^\top \varphi(X_n))(t_n - W_{ML}^\top \varphi(X_n))^\top = \\ & = \frac{N}{2} \Sigma - \frac{1}{2}(T^\top - W^\top \varPhi^\top)(T^\top - W^\top \varPhi^\top)^\top
+\end{align}
+
+So we obtain $\Sigma = \frac{1}{N}\sum\limits_{n=1}^N(t_n - W_{ML}^\top \varphi(X_n))(t_n - W_{ML}^\top \varphi(X_n))^\top$.
 
 \end{document}
