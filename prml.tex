@@ -1,6 +1,5 @@
 \documentclass[fleqn]{article}
 
-\usepackage[russian]{babel}
 \usepackage[utf8]{inputenc}
 \usepackage{fullpage}
 \usepackage{graphicx}
@@ -143,5 +142,9 @@ Now let us consider
 \end{align}
 
 So we obtain $\Sigma = \frac{1}{N}\sum\limits_{n=1}^N(t_n - W_{ML}^\top \varphi(X_n))(t_n - W_{ML}^\top \varphi(X_n))^\top$.
+
+\section*{Problem 8.1}
+
+The idea is to start integrating from $x_K$ down to $x_1$. Since there is just one factor containing $x_K$, which is $p(x_K|pa_K)$ we can easily integrate it with respect to $x_K$ and we obviously get 1. After that, we get a reduced problem with $K-1$ factors, and by the same logic we can integrate sequentially with respect to $x_{K-1}...x_1$. On every step, we get a 1 factor after integration, so in the end we will get 1, which means the distribution is normalized. 
 
 \end{document}
