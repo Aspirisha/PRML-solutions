@@ -162,4 +162,8 @@ The following probabilistic graphical model describes relevance vector machine i
 	\label{fig:boat1}
 \end{figure}
 
+\section*{Problem 8.6}
+
+As we can see, each variable $x_i$ has an effect of multiplying negative term by $(1 - \mu_i)^{x_i}$. If $x_i$ is zero, this factor reduces to 1. But, if $x_i$ is 1, this turns into $(1-\mu_i)$, which is the probability of $x_i$ being zero. The greater this probability is (i.e. the smaller is $\mu_i$) the greater will be the negative factor. So this accounts to the fact that $x_i$ could be 1 because of noise with the probability  $\mu_i - 1$. $\mu_0$ is the probability of $y$ being 1 when all $x_1..x_N$ are zeros. 
+
 \end{document}
