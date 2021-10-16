@@ -151,4 +151,15 @@ The idea is to start integrating from $x_K$ down to $x_1$. Since there is just o
 
 Suppose the opposite, that there is a directed cycle in such a graph. Then we can start from any node on this cycle and start traversing it from this node along cycle edges. It is obvious that each edge will connect current node with a one having a greater number. But graph has a finite amount of nodes (lets say $K$), and so the sequence of nodes can not be ascending for more than $K$ nodes, after which we will have an edge connecting two nodes with descending numbers. This is a contraction (there should be no such edges in a graph), so our assumption is incorrect and there can not exist a cycle in such directed graph. 
 
+\section*{Problem 8.5}
+
+The following probabilistic graphical model describes relevance vector machine introduced in the 7th chapter
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[scale=0.5]{images/problem_8.5.png}
+	\caption{Relevance vector machine graphical model}
+	\label{fig:boat1}
+\end{figure}
+
 \end{document}
