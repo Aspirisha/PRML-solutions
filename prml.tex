@@ -174,4 +174,26 @@ To prove this, we just integrate over $c$ the known equality: $\int\limits_{c}p(
 
 On the other hand, $\int\limits_{c}p(a,b,c|d) = p(a,b|d)$ and so the equality is proven. 
 
+\section*{Problem 8.9}
+
+Let us consider a node describing variable $x$ and its Markov blanket. Let us consider any $y \notin Blanket(x)$ and show that any path from it to $x$ is blocked. The last node on this path before $x$ can be either:
+\begin{itemize}
+	\item parent of $x$
+	\item child of $x$
+\end{itemize}
+
+First suppose there is a path from $y$ to $x$ which includes some parent $z$ of $x$ as a last node in the path (except $x$). Such a path is blocked by the corresponding parent because the arrows on this path are head-to-tail or tail-to-tail (because $z$ is a parent of $x$, the arrow goes from $z$ to $x$).
+
+Now let us consider the situation when the path from $y$ to $x$ ends with a child $u$ of $x$. Then we need again to consider two options:
+\begin{itemize}
+	\item the path enters $u$ via arrow
+	\item the path enters $u$ via tail
+\end{itemize}
+
+In the first case, the path goes from $v$ to $u$, where $v$ is a co-parent of $x$. It can be seen that $v$ blocks the path because it has a tail-to-tail or tail-to-head connection at $v$.
+
+In the second case, the path has a tail-to-head connection at $u$ and is blocked by $u$.
+
+So, in any case, the path from $y$ to $x$ is blocked.
+
 \end{document}
