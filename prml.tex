@@ -251,4 +251,22 @@ P(F = 0|D=0,B=0) =  \frac{P(F = 0, D = 0, B=0)}{P(D=0,B=0)} = \frac{0.0082}{0.06
 So the probability of tank being empty in case we know battery is flat and driver reported the gauge shows empty is indeed lower than the same probability but when we do not know the battery is actually flat. The intuition behind is that if we know the battery is flat, it can be the reason why the gauge shows the tank is empty (whether it is really empty or not), and as driver's report is highly correlated with the gauge readings, we should have less belief in the driver's report results. 
 
 This means that $P(F|D,B) \ne P(F|D)$, so tank emptiness and battery flattness are not independent conditioned on driver's report, while they are independent inconditionally. This shows that conditioning on the decendants ($D$) of the collider ($G$) leads to unblocking the association path in graphical models.
+
+\section*{Problem 8.12}
+
+For each pair of nodes, there either can be and edge or it can be absent in the graph. There are $\frac{M(M-1)}{2}$ pairs of nodes, which gives us $2^\frac{M(M-1)}{2}$ different graphs.
+
+\section*{Problem 8.13}
+
+\begin{align}
+	E(\boldsymbol{x},\boldsymbol{y}) = h\sum\limits_{i} x_i - \beta \sum\limits_{i,j } x_ix_j - \eta \sum\limits_{i} x_iy_i
+\end{align}
+
+Suppose all the variables are fixed except $x_j$. Let us denote $\boldsymbol{x_0}$ the set of $\boldsymbol{x}$ variables with $x_j = 0$, and $\boldsymbol{x_1}$ the same set, but with $x_j = 1$. Then 
+
+\begin{align}
+	E(\boldsymbol{x_1},\boldsymbol{y}) - E(\boldsymbol{x_0},\boldsymbol{y}) = h (1 - 0) - \beta \sum\limits_{i : ne(j)) } 1\cdot x_i - \eta 1 \cdot y_j = h - \beta \sum\limits_{i : ne(j)) } x_i - \eta y_j
+\end{align}
+
+As we see, this expression indeed depends only on the quantities, that are local to $x_j$ in the graph: $y_j$ and $x_i$ which are $x_j$'s neighbors. 
 \end{document}
