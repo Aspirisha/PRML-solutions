@@ -202,4 +202,53 @@ The only path from $a$ to $b$ goes through $c$. It enters $c$ head-to-head and s
 
 When either $c$ or $d$ is observed, this path becomes unblocked, and so $a$ starts to depend on $b$. 
 
+\section*{Problem 8.11}
+We have that
+ \begin{align}
+	P(F,D,G,B) = P(F)P(B)P(G|F,B)P(D|G)
+\end{align}
+
+And we will use the following equation, inferred from the bayes' theorem application:
+\begin{align}
+	P(F|D) = \frac{P(F,D)}{P(D)}
+\end{align}
+
+\begin{align}
+\begin{split}
+P(F=0,D=0,B=0,G=0) = 0.1 * 0.1 * 0.9 * 0.9 = 0.0081\\
+P(F=0,D=0,B=0,G=1) = 0.1 * 0.1 * 0.1 * 0.1 = 0.0001\\
+P(F=0,D=0,B=1,G=0) = 0.1 * 0.9 * 0.8 * 0.9 = 0.0648\\
+P(F=0,D=0,B=1,G=1) = 0.1 * 0.9 * 0.2 * 0.1 = 0.0018
+\end{split}
+\end{align}
+
+So, $P(F = 0,D = 0) = 0.0748$
+
+\begin{align}
+\begin{split}
+	P(F=1,D=0,B=0,G=0) = 0.9 * 0.1 * 0.8 * 0.9 = 0.0648\\
+	P(F=1,D=0,B=0,G=1) = 0.9 * 0.1 * 0.2 * 0.1 = 0.0018\\
+	P(F=1,D=0,B=1,G=0) = 0.9 * 0.9 * 0.2 * 0.9 = 0.1458\\
+	P(F=1,D=0,B=1,G=1) = 0.9 * 0.9 * 0.8 * 0.1 = 0.0648
+\end{split}
+\end{align}
+
+So, $P(F = 1,D = 0) = 0.2772$
+
+\begin{align}
+P(F = 0|D=0) = \frac{P(F = 0, D = 0)}{P(D=0)} = \frac{0.0748}{0.0748 + 0.2772} = 0.2125
+\end{align}
+
+Now let us suppose we also know, that the battery is flat ($B = 0$):
+
+$P(F = 0,D = 0,B =0) = 0.0082$
+
+And thus we get
+\begin{align}
+P(F = 0|D=0,B=0) =  \frac{P(F = 0, D = 0, B=0)}{P(D=0,B=0)} = \frac{0.0082}{0.0666 + 0.0082} = 0.1096
+\end{align}
+
+So the probability of tank being empty in case we know battery is flat and driver reported the gauge shows empty is indeed lower than the same probability but when we do not know the battery is actually flat. The intuition behind is that if we know the battery is flat, it can be the reason why the gauge shows the tank is empty (whether it is really empty or not), and as driver's report is highly correlated with the gauge readings, we should have less belief in the driver's report results. 
+
+This means that $P(F|D,B) \ne P(F|D)$, so tank emptiness and battery flattness are not independent conditioned on driver's report, while they are independent inconditionally. This shows that conditioning on the decendants ($D$) of the collider ($G$) leads to unblocking the association path in graphical models.
 \end{document}
