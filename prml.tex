@@ -259,14 +259,61 @@ For each pair of nodes, there either can be and edge or it can be absent in the 
 \section*{Problem 8.13}
 
 \begin{align}
+	\label{eqn:icm_energy}
 	E(\boldsymbol{x},\boldsymbol{y}) = h\sum\limits_{i} x_i - \beta \sum\limits_{i,j } x_ix_j - \eta \sum\limits_{i} x_iy_i
 \end{align}
 
-Suppose all the variables are fixed except $x_j$. Let us denote $\boldsymbol{x_0}$ the set of $\boldsymbol{x}$ variables with $x_j = 0$, and $\boldsymbol{x_1}$ the same set, but with $x_j = 1$. Then 
+Suppose all the variables are fixed except $x_j$. Let us denote $\boldsymbol{x_{-1}}$ the set of $\boldsymbol{x}$ variables with $x_j = -1$, and $\boldsymbol{x_1}$ the same set, but with $x_j = 1$. Then 
 
 \begin{align}
-	E(\boldsymbol{x_1},\boldsymbol{y}) - E(\boldsymbol{x_0},\boldsymbol{y}) = h (1 - 0) - \beta \sum\limits_{i : ne(j)) } 1\cdot x_i - \eta 1 \cdot y_j = h - \beta \sum\limits_{i : ne(j)) } x_i - \eta y_j
+	E(\boldsymbol{x_1},\boldsymbol{y}) - E(\boldsymbol{x_{-1}},\boldsymbol{y}) = h (1 + 1) - \beta \sum\limits_{i : ne(j)) } 2\cdot x_i - \eta 2 \cdot y_j = 2h - 2\beta \sum\limits_{i : ne(j)) } x_i - 2\eta y_j
 \end{align}
 
 As we see, this expression indeed depends only on the quantities, that are local to $x_j$ in the graph: $y_j$ and $x_i$ which are $x_j$'s neighbors. 
+
+\section*{Problem 8.14}
+
+Suppose $\beta = h = 0$. Then equation  \ref{eqn:icm_energy} turns into 
+
+\begin{align}
+	E(\boldsymbol{x},\boldsymbol{y}) = -  \eta \sum\limits_{i} x_iy_i
+\end{align}
+
+It is clear, that this value reaches its minimum when $x_i = y_i$ for all $i$, in which case the energy function value will be $-N$, where $N$ is the number of pixels in the image. Since the probability of configuration is defined as $P(\boldsymbol x,\boldsymbol y) = \frac{1}{Z}\exp(-E(x,y))$, it reaches it's maximum when energy is minimal.
+
+\section*{Problem 8.15}
+
+We just need to rearrange summations carefully:
+
+\begin{align}
+	\begin{split}
+& P(x_{n-1},x_n) = \sum\limits_{x_i, i \notin\{n-1,n\}}\frac{1}{Z}\psi_{1,2}(x_1,x_2)\psi_{2,3}(x_2,x_3)\ldots\psi_{n-1,n}(x_{n-1},x_n))\ldots\psi_{N-1,N}(x_{N-1},x_N) \\& = \frac{1}{Z}\psi_{n-1,n}(x_{n-1},x_n)) \sum\limits_{x_i, i \notin\{n-1,n\}}\psi_{1,2}(x_1,x_2)\ldots\psi_{n-2,n-1}(x_{n-2},x_{n-1})\\&\psi_{n,n+1}(x_{n},x_{n+1} \ldots\psi_{N-1,N}(x_{N-1},x_N) \\&=  \frac{1}{Z}\psi_{n-1,n}(x_{n-1},x_n) \sum\limits_{x_{n-2}}\psi_{n-2,n-1}(x_{n-2},x_{n-1})
+\sum\limits_{x_{n-3}}\psi_{n-3,n-2}(x_{n-3},x_{n-2})\ldots\sum\limits_{x_{1}}\psi_{1,2}(x_{1},x_{2})\\&\sum\limits_{x_{1}}\psi_{n,n+1}(x_{n},x_{n+1})\ldots	\sum\limits_{x_{N}}\psi_{N-1,N}(x_{N-1},x_{N})	=  \frac{1}{Z}\psi_{n-1,n}(x_{n-1},x_n)\mu_\alpha(x_{n-1})\mu_\beta(x_n)
+\end{split}
+\end{align}
+
+\section*{Problem 8.16}
+
+Let us start with writing down the joint probability of ($x_n$, $x_N$):
+
+\begin{align}
+		\label{eqn:joint_8_16}
+	\begin{split}
+p(x_n, x_N) &= \frac{1}{Z}\sum\limits_{x_{n-1}}\psi_{n-1,n}(x_{n-1},x_n)\sum\limits_{x_{n-2}}\psi_{n-2,n-1}(x_{n-2},x_{n-1})\ldots\\&\sum\limits_{x_{1}}\psi_{1,2}(x_{1},x_2)\sum\limits_{x_{n+1}}\psi_{n,n+1}(x_{n},x_{n+1})\sum\limits_{x_{n+1}}\psi_{n+1,n+2}(x_{n+1},x_{n+2})\ldots\\&\sum\limits_{x_{N-1}}\psi_{N-2,N-1}(x_{N-2},x_{N-1})\psi_{N-1,N}(x_{N-1},x_N)
+	\end{split}
+\end{align}
+
+As we see, the first part is exactly $\mu_\alpha(x_n)$. The second part though is a bit different from $\mu_\beta(x_n)$, so we need to introduce some changes into message definitions. Let us define $\mu_\beta(x_k, X_N)$ in the following way:
+
+\begin{align}
+	\mu_\beta(x_{N-1}, x_N) & = \psi_{N-1,N}(x_{N-1}, x_N)  & \\
+	\mu_\beta(x_{k-1}, x_N) & = \sum\limits_{x_k}\psi_{k-1,k}(x_{k-1}, x_k)\mu_\beta(x_{k}, x_N) & k < N
+\end{align}
+
+Then, we can rewrite the equation \ref{eqn:joint_8_16} as 
+
+\begin{align}
+	p(x_n, x_N) &= \frac{1}{Z}\mu_\alpha(x_n)\mu_\beta(x_{n}, x_N)
+\end{align}
+
 \end{document}
