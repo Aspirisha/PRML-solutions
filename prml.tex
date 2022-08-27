@@ -356,4 +356,20 @@ So we see, that the last factor, containing $\hat x_5$ reduces:
 		p(x_2 | \hat x_3, \hat x_5) &= \frac{\mu_\alpha(x_2) \psi_{2,3}(x_2, \hat x_3)}{\sum\limits_{x_2}\mu_\alpha(x_2) \psi_{2,3}(x_2, \hat x_3)}
 	\end{split}
 \end{align}
+
+\section*{Problem 8.18}
+%Show that a distribution represented by a directed tree can trivially be written as an equivalent distribution over the corresponding undirected tree. Also show that a distribution expressed as an undirected tree can, by suitable normaliza- tion of the clique potentials, be written as a directed tree. Calculate the number of distinct directed trees that can be constructed from a given undirected tree.
+
+For directed trees, we have the following probablity distribution:
+\begin{align}
+	p(x) = \prod\limits_{x_i} p(x_i | par(x_i))
+\end{align}
+
+This also can be represented as undirected tree with the same edges (but with orientation abandoned), with potentials $\psi_{i,j}(x_j, x_i) = p(x_j | x_i)$ and normalizing constant $Z = 1$, where $x_i = parent(x_i)$ in the directed tree.
+
+Let us consider the reverse process of moving from undirected tree to a directed tree. We can introduce orientation of every edge by selecting a single node as a root node, which will have no parents. After that, we can introduce directions over the edges in a bfs-order, strting from the selected root. For every pair of connected nodes $x_i, x_j$, $i < j$ we set $p(x_j | x_i) = \frac{\psi_{i,j}(x_i, x_j)}{\sum\limits_{x_j}\psi_{i,j}(x_i, x_j)}$
+which gives us the conditional probabilities defining corresponsing directed graph edge.
+
+
+Now, how many distinct directed trees one can get from a single undirected tree? It is obvious, that every root selection gives us a distinct oriented tree (since these trees will at least have different roots). On the other hand, after we have chosen the root, all the orientations are determined using bfs algorithm uniquely, so each root selection introduces just a single directed tree. So, we have a total of $N$ distinct directed trees which can be geenrated from one undirected tree.
 \end{document}
