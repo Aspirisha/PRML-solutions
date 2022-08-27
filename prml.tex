@@ -14,6 +14,8 @@
 \counterwithin*{equation}{subsection}
 \counterwithin*{equation}{section}
 
+\newcommand\independent{\protect\mathpalette{\protect\independenT}{\perp}}
+\def\independenT#1#2{\mathrel{\rlap{$#1#2$}\mkern2mu{#1#2}}}
 \begin{document}
 
 \section*{Problem 3.2}
@@ -313,7 +315,45 @@ As we see, the first part is exactly $\mu_\alpha(x_n)$. The second part though i
 Then, we can rewrite the equation \ref{eqn:joint_8_16} as 
 
 \begin{align}
-	p(x_n, x_N) &= \frac{1}{Z}\mu_\alpha(x_n)\mu_\beta(x_{n}, x_N)
+	p(x_n, x_N) &= \frac{1}{Z}\mu_\alpha(x_n)\mu_\beta(x_{n}, x_N) 
 \end{align}
 
+Finally, we can write the conditional distribution as 
+
+\begin{align}
+p(x_n | x_N) &= \frac{\mu_\alpha(x_n)\mu_\beta(x_{n}, x_N)}{\mu_\alpha(x_N)}
+\end{align}
+
+\section*{Problem 8.17}
+
+% Consider a graph of the form shown in Figure 8.38 having N = 5 nodes, in which nodes x3 and x5 are observed. Use d-separation to show that x2 ⊥ x5 | x3. Show that if the message passing algorithm of Section 8.4.1 is applied to the evalu- ation of p(x2|x3, x5), the result will be independent of the value of x5.
+
+The only path from $x_2$ to $x_5$ in undirected chain graph goes through $x_3$, so if we condition on $x_3$, we block this path, and so $x_2 \independent x_5 \mkern2mu | \mkern2mu x_3$.
+
+Now let us consider $p(x_2 | x_3, x_5)$ and show that it is independent of $x_5$. 
+
+\begin{align}
+	p(x_2 | \hat x_3, \hat x_5) &= \frac{1}{Z}\mu_\alpha(x_2)\mu'_\beta(x_2) \\
+	\begin{split}
+	\mu'_\beta(x_2) &= \sum\limits_{x_3}\psi_{2,3}(x_2, x_3) I(x_3, \hat x_3)  \sum\limits_{x_4}\psi_{3,4}(x_3, x_4) \sum\limits_{x_5}\psi_{4,5}(x_4, x_5) I(x_5, \hat x_5) \\
+	&=  \psi_{2,3}(x_2, \hat x_3)  \sum\limits_{x_4}\psi_{3,4}(\hat x_3, x_4)  \psi_{4,5}(x_4, \hat x_5)  
+	\end{split}
+\end{align}
+
+So, it seems that $p(x_2| \hat x_3, \hat x_5)$ still depends on the value of $\hat x_5$. But we haven't considered the form of $Z$, which probably will help.
+
+\begin{align}
+	\begin{split}
+	Z &= \sum\limits_{x_1...x_5}\psi_{1,2}(x_1, x_2)\psi_{2,3}(x_2, x_3)\psi_{3,4}(x_3, x_4)\psi_{4,5}(x_4, x_5)I(x_3,\hat x_3) I(x_5, \hat x_5) \\ 
+	&=  \sum\limits_{x_1,x_2}\psi_{1,2}(x_1, x_2) \psi_{2,3}(x_2, \hat x_3) \sum\limits_{x_4}\psi_{3,4}(\hat x_3, x_4)\psi_{4,5}(x_4, \hat x_5)
+	\end{split}
+\end{align}
+
+So we see, that the last factor, containing $\hat x_5$ reduces:
+
+\begin{align}
+	\begin{split}
+		p(x_2 | \hat x_3, \hat x_5) &= \frac{\mu_\alpha(x_2) \psi_{2,3}(x_2, \hat x_3)}{\sum\limits_{x_2}\mu_\alpha(x_2) \psi_{2,3}(x_2, \hat x_3)}
+	\end{split}
+\end{align}
 \end{document}
