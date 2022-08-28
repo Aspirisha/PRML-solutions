@@ -372,4 +372,103 @@ which gives us the conditional probabilities defining corresponsing directed gra
 
 
 Now, how many distinct directed trees one can get from a single undirected tree? It is obvious, that every root selection gives us a distinct oriented tree (since these trees will at least have different roots). On the other hand, after we have chosen the root, all the orientations are determined using bfs algorithm uniquely, so each root selection introduces just a single directed tree. So, we have a total of $N$ distinct directed trees which can be geenrated from one undirected tree.
+
+
+\section*{Problem 8.19}
+%Apply the sum-product algorithm derived in Section 8.4.4 to the chain-of- nodes model discussed in Section 8.4.1 and show that the results (8.54), (8.55), and (8.57) are recovered as a special case.
+
+It's easy to see that we can get the same message functions $\mu_\alpha(x)$ and $\mu_\beta(x)$ using sum-product algorithm. Suppose we consider marginal distribution over $x_n$, thus making $x_n$ to be the root of the factor-graph. The graph will have two branches: the left, where the messages will be passed from the leaf $x_1$ up to $x_n$, and the right, where the messages will be passed from the leaf $x_N$ again to the root $x_n$.
+
+For the left branch, we get
+\begin{align}
+\begin{split}
+\mu_{x_1->f_1} (x_1)&= 1 \\
+\mu_{f_1->x_2} (x_2)&= \sum\limits_{x_1}f_1(x_1, x_2)\mu_{x_1->f_1}(x_1) = \sum\limits_{x_1}f_1(x_1, x_2) = \mu_\alpha(x_2)\\
+\mu_{x_2->f_3}(x_2) &= \mu_{f_1->x_2}\\
+\ldots\\
+\mu_{f_{n-1}->x_n}(x_n) &= \sum\limits_{x_{n-1}}f_{n-1}(x_{n-1}, x_{n})\mu_{x_{n-1}->f_{n-1}}(x_{n-1}) = \mu_\alpha(x_n)
+\end{split}
+\end{align}
+
+
+For the right branch, essentially, everything is similar:
+\begin{align}
+	\begin{split}
+		\mu_{x_N->f_{N-1}} (x_N)&= 1 \\
+		\mu_{f_{N-1}->x_{N-1}} (x_{N-1})&= \sum\limits_{x_N}f_{N-1}(x_{N-1}, x_N)\mu_{x_{N}->f_{N-1}}(x_N) = \sum\limits_{x_N}f_{N-1}(x_{N-1}, x_N) = \mu_\beta(x_{N-1})\\
+		\mu_{x_{N-1}->f_{N-2}}(x_{N-1}) &= \mu_{f_{N-1}->x_{N-1}}(x_{N-1})\\
+		\ldots\\
+		\mu_{f_{n}->x_n}(x_n) &= \sum\limits_{x_{n+1}}f_{n}(x_{n}, x_{n+1})\mu_{x_{n+1}->f_{n}}(x_{n+1}) = \mu_\beta(x_n)
+	\end{split}
+\end{align}
+
+So, we obtain the same formula for marginal distribution: $p(x) = \frac{1}{Z}\mu_\alpha(x_n) \mu_\beta(x_n)$
+
+\section*{Problem 8.21}
+%Show that the marginal distributions p(xs) over the sets of variables xs associated with each of the factors fx(xs) in a factor graph can be found by first running the sum-product message passing algorithm and then evaluating the required marginals using 
+
+We can write the full distribution as 
+\begin{align}
+	p(x) = f_s(x_{s_1},...,x_{s_m})\prod\limits_{i=1}^mG_{s_i}(x_{s_i}, X_{s_i})
+\end{align}
+
+Applying marginalization over all the variables, except the ones contained in $f_s$, we get the marginal distribution we are interested in: 
+
+\begin{align}
+	\begin{split}
+	p(x_{s_1},...,x_{s_m}) &= \sum\limits_{x \notin ne(f_s)}f_s(x_{s_1},...,x_{s_m})\prod\limits_{i=1}^mG_{s_i}(x_{s_i}, X_{s_i}) = f_s(x_{s_1},...,x_{s_m})\prod\limits_{i=1}^m\sum\limits_{X_{s_i}}G_{s_i}(x_{s_i}, X_{s_i}) \\
+	&= f_s(x_{s_1},...,x_{s_m})\prod\limits_{i=1}^m\mu_{x_{s_i}->f_s}(x_{s_i})
+	\end{split}
+\end{align}
+
+Where the last transition is done, using formula 8.67.
+
+
+%Consider a tree-structured factor graph, in which a given subset of the variable nodes form a connected subgraph (i.e., any variable node of the subset is connected to at least one of the other variable nodes via a single factor node). Show how the sum-product algorithm can be used to compute the marginal distribution over that subset.
+
+\section*{Problem 8.22}
+
+Suppose we are interested in $p(x_{i_1},...,x_{i_k})$ where $x_{i_1}...x_{i_k}$ belong to a connected subgraph.
+We start with reconsidering 8.66:
+
+\begin{align}
+	\mu_{f_s->x}(x, x_{i_1},...,x_{i_k}) = \sum\limits_{\boldsymbol{x_s} \backslash \{x, x_{i_1},...,x_{i_k}\}}f_s(x, x_1, ..., x_M)\prod\limits_{m \in ne(f_s) \backslash x}\mu_{x_m->f_s}(x_m, x_{i_1},...,x_{i_k})
+\end{align}
+
+In the same way, we reconsider 8.69:
+\begin{align}
+	\mu_{x_m->f_s}(x_m, x_{i_1},...,x_{i_k}) = \prod\limits_{l \in ne(x_m) \backslash f_s}\mu_{f_l->x_m}(x_m, x_{i_1},...,x_{i_k})
+\end{align}
+
+The initial conditions are still the same, so no other changes should be done to the algorithm.
+
+\section*{Problem 8.23}
+%In Section 8.4.4, we showed that the marginal distribution p(xi) for a variable node xi in a factor graph is given by the product of the messages arriving at this node from neighbouring factor nodes in the form (8.63). Show that the marginal p(xi) can also be written as the product of the incoming message along any one of the links with the outgoing message along the same link.
+
+We start with rewriting 8.63, selecting one of the factors from the product (say having index $q$) and writing it separately:
+\begin{align}
+	p(x) = \prod\limits_{s \in ne(x)} \mu_{f_s\to x} (x) =  \mu_{f_q\to x} (x) \prod\limits_{s \in ne(x) \backslash q} \mu_{f_s\to x} (x) 
+\end{align}
+
+We now can apply 8.69, which says that $\mu_{x \to f_q} (x) = \prod\limits_{s \in ne(x) \backslash q} \mu_{f_s\to x} (x)$. Combining these observations, we get
+
+\begin{align}
+	p(x) =  \mu_{f_q\to x} (x) \mu_{x \to f_q} (x)
+\end{align}
+
+Side note: while solving the problem, I have figured out I did not understand completely how we obtained 8.66 formula, so I think it will be nice to write it down. We will start with substituting 8.65 into 8.64, but doing it a bit more explicitely than in the original book:
+
+\begin{align}
+	\mu_{f_s \to x}(x) = \sum\limits_{X_s}F_s(x,X_s) =\sum\limits_{X_s} f_s(x,x_1,...,x_M)G_1 (x_1,X_{s_1})...G_M (x_M,X_{s_M})
+\end{align}
+
+The idea is now to look carefully at the picture 8.47 and figure out that we can present $X_s$ as a union of non-overlapping sets: $X_s = \{x_1, x_2, \ldots, x_M\} \cup X_{s_1} \cup X_{s_2} \cup \ldots  \cup X_{s_M}$. This means, that we can view the summation over $X_s$ as a summation over all of this distinct sets, and this will be convenient since $f_s$ depends only on $\{x_1,\ldots,x_M\}$, and $G_m$ depends only on $X_{s_m}$. 
+
+\begin{align}
+	\begin{split}
+	\mu_{f_s \to x}(x) &= \sum\limits_{X_s} f_s(x,x_1,...,x_M)G_1 (x_1,X_{s_1})...G_M (x_M,X_{s_M}) = \\
+	&= \sum\limits_{x_1...x_m}f_s(x_1...x_m)\prod\limits_{m}\sum\limits_{X_{s_m}}G_m(x_m, X_{s_m})
+	\end{split}
+\end{align}
+
 \end{document}
