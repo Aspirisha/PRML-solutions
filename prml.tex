@@ -382,11 +382,11 @@ It's easy to see that we can get the same message functions $\mu_\alpha(x)$ and 
 For the left branch, we get
 \begin{align}
 \begin{split}
-\mu_{x_1->f_1} (x_1)&= 1 \\
-\mu_{f_1->x_2} (x_2)&= \sum\limits_{x_1}f_1(x_1, x_2)\mu_{x_1->f_1}(x_1) = \sum\limits_{x_1}f_1(x_1, x_2) = \mu_\alpha(x_2)\\
-\mu_{x_2->f_3}(x_2) &= \mu_{f_1->x_2}\\
+\mu_{x_1\to f_1} (x_1)&= 1 \\
+\mu_{f_1\to x_2} (x_2)&= \sum\limits_{x_1}f_1(x_1, x_2)\mu_{x_1\to f_1}(x_1) = \sum\limits_{x_1}f_1(x_1, x_2) = \mu_\alpha(x_2)\\
+\mu_{x_2\to f_3}(x_2) &= \mu_{f_1\to x_2}\\
 \ldots\\
-\mu_{f_{n-1}->x_n}(x_n) &= \sum\limits_{x_{n-1}}f_{n-1}(x_{n-1}, x_{n})\mu_{x_{n-1}->f_{n-1}}(x_{n-1}) = \mu_\alpha(x_n)
+\mu_{f_{n-1}\to x_n}(x_n) &= \sum\limits_{x_{n-1}}f_{n-1}(x_{n-1}, x_{n})\mu_{x_{n-1}\to f_{n-1}}(x_{n-1}) = \mu_\alpha(x_n)
 \end{split}
 \end{align}
 
@@ -394,11 +394,11 @@ For the left branch, we get
 For the right branch, essentially, everything is similar:
 \begin{align}
 	\begin{split}
-		\mu_{x_N->f_{N-1}} (x_N)&= 1 \\
-		\mu_{f_{N-1}->x_{N-1}} (x_{N-1})&= \sum\limits_{x_N}f_{N-1}(x_{N-1}, x_N)\mu_{x_{N}->f_{N-1}}(x_N) = \sum\limits_{x_N}f_{N-1}(x_{N-1}, x_N) = \mu_\beta(x_{N-1})\\
-		\mu_{x_{N-1}->f_{N-2}}(x_{N-1}) &= \mu_{f_{N-1}->x_{N-1}}(x_{N-1})\\
+		\mu_{x_N\to f_{N-1}} (x_N)&= 1 \\
+		\mu_{f_{N-1}\to x_{N-1}} (x_{N-1})&= \sum\limits_{x_N}f_{N-1}(x_{N-1}, x_N)\mu_{x_{N}\to f_{N-1}}(x_N) = \sum\limits_{x_N}f_{N-1}(x_{N-1}, x_N) = \mu_\beta(x_{N-1})\\
+		\mu_{x_{N-1}\to f_{N-2}}(x_{N-1}) &= \mu_{f_{N-1}\to x_{N-1}}(x_{N-1})\\
 		\ldots\\
-		\mu_{f_{n}->x_n}(x_n) &= \sum\limits_{x_{n+1}}f_{n}(x_{n}, x_{n+1})\mu_{x_{n+1}->f_{n}}(x_{n+1}) = \mu_\beta(x_n)
+		\mu_{f_{n}\to x_n}(x_n) &= \sum\limits_{x_{n+1}}f_{n}(x_{n}, x_{n+1})\mu_{x_{n+1}\to f_{n}}(x_{n+1}) = \mu_\beta(x_n)
 	\end{split}
 \end{align}
 
@@ -417,7 +417,7 @@ Applying marginalization over all the variables, except the ones contained in $f
 \begin{align}
 	\begin{split}
 	p(x_{s_1},...,x_{s_m}) &= \sum\limits_{x \notin ne(f_s)}f_s(x_{s_1},...,x_{s_m})\prod\limits_{i=1}^mG_{s_i}(x_{s_i}, X_{s_i}) = f_s(x_{s_1},...,x_{s_m})\prod\limits_{i=1}^m\sum\limits_{X_{s_i}}G_{s_i}(x_{s_i}, X_{s_i}) \\
-	&= f_s(x_{s_1},...,x_{s_m})\prod\limits_{i=1}^m\mu_{x_{s_i}->f_s}(x_{s_i})
+	&= f_s(x_{s_1},...,x_{s_m})\prod\limits_{i=1}^m\mu_{x_{s_i}\to f_s}(x_{s_i})
 	\end{split}
 \end{align}
 
@@ -432,12 +432,12 @@ Suppose we are interested in $p(x_{i_1},...,x_{i_k})$ where $x_{i_1}...x_{i_k}$ 
 We start with reconsidering 8.66:
 
 \begin{align}
-	\mu_{f_s->x}(x, x_{i_1},...,x_{i_k}) = \sum\limits_{\boldsymbol{x_s} \backslash \{x, x_{i_1},...,x_{i_k}\}}f_s(x, x_1, ..., x_M)\prod\limits_{m \in ne(f_s) \backslash x}\mu_{x_m->f_s}(x_m, x_{i_1},...,x_{i_k})
+	\mu_{f_s\to x}(x, x_{i_1},...,x_{i_k}) = \sum\limits_{\boldsymbol{x_s} \backslash \{x, x_{i_1},...,x_{i_k}\}}f_s(x, x_1, ..., x_M)\prod\limits_{m \in ne(f_s) \backslash x}\mu_{x_m\to f_s}(x_m, x_{i_1},...,x_{i_k})
 \end{align}
 
 In the same way, we reconsider 8.69:
 \begin{align}
-	\mu_{x_m->f_s}(x_m, x_{i_1},...,x_{i_k}) = \prod\limits_{l \in ne(x_m) \backslash f_s}\mu_{f_l->x_m}(x_m, x_{i_1},...,x_{i_k})
+	\mu_{x_m\to f_s}(x_m, x_{i_1},...,x_{i_k}) = \prod\limits_{l \in ne(x_m) \backslash f_s}\mu_{f_l\to x_m}(x_m, x_{i_1},...,x_{i_k})
 \end{align}
 
 The initial conditions are still the same, so no other changes should be done to the algorithm.
@@ -468,7 +468,38 @@ The idea is now to look carefully at the picture 8.47 and figure out that we can
 	\begin{split}
 	\mu_{f_s \to x}(x) &= \sum\limits_{X_s} f_s(x,x_1,...,x_M)G_1 (x_1,X_{s_1})...G_M (x_M,X_{s_M}) = \\
 	&= \sum\limits_{x_1...x_m}f_s(x_1...x_m)\prod\limits_{m}\sum\limits_{X_{s_m}}G_m(x_m, X_{s_m})
+	\end{split}w
+\end{align}
+
+\section*{Problem 8.25}
+%In (8.86), we verified that the sum-product algorithm run on the graph in Figure 8.51 with node x3 designated as the root node gives the correct marginal for x2. Show that the correct marginals are obtained also for x1 and x3. Similarly, show that the use of the result (8.72) after running the sum-product algorithm on this graph gives the correct joint distribution for x1, x2.
+
+Let us check that after applying sum-product algorithm we get correct marginal distribution for $x_1$:
+\begin{align}
+	\begin{split}
+	\tilde p(x_1) &= \mu_{f_a\to x_1}(x_1) = \sum\limits_{x_2}f_a(x_1, x_2)\mu_{x_2\to f_a}(x_2) =  \sum\limits_{x_2}f_a(x_1, x_2)\mu_{f_b\to x_2}(x_2) \mu_{f_c\to x_2}(x_2) \\
+	&= \sum\limits_{x_2}f_a(x_1, x_2)\sum\limits_{x_3}f_b(x_2, x_3)\sum\limits_{x_4}f_c(x_2, x_4) \\
+	&= \sum\limits_{x_2}\sum\limits_{x_3}\sum\limits_{x_4}f_a(x_1, x_2)f_b(x_2, x_3)f_c(x_2, x_4)
+		\end{split}
+\end{align}
+
+The same goes for $x_3$:
+\begin{align}
+	\begin{split}
+		\tilde p(x_3) &= \mu_{f_b\to x_3}(x_3) = \sum\limits_{x_2}f_b(x_2, x_3)\mu_{x_2\to f_b}(x_2) =  \sum\limits_{x_2}f_b(x_2, x_3)\mu_{f_a\to x_2}(x_2) \mu_{f_c\to x_2}(x_2) \\
+		&= \sum\limits_{x_2}f_b(x_2, x_3)\sum\limits_{x_1}f_a(x_1, x_2)\sum\limits_{x_4}f_c(x_2, x_4) \\
+		&= \sum\limits_{x_1}\sum\limits_{x_2}\sum\limits_{x_4}f_a(x_1, x_2)f_b(x_2, x_3)f_c(x_2, x_4)
 	\end{split}
+\end{align}
+
+
+\begin{align}
+\begin{split}
+	p(x_1, x_2) &= \sum\limits_{x_3,x_4}f_a(x_1,x_2)f_b(x_2,x_3)f_c(x_2, x_4) = f_a(x_1,x_2)\sum\limits_{x_3,x_4}f_b(x_2,x_3)f_c(x_2, x_4) \\
+	&= f_a(x_1,x_2)\sum\limits_{x_3}f_b(x_2,x_3)\sum\limits_{x_4}f_c(x_2, x_4) = f_a(x_1,x_2)\mu_{f_b\to x_2}(x_2)\mu_{f_c\to x_2}(x_2) \\
+	&= f_a(x_1,x_2)\mu_{x_2 \to f_a}(x_2) \cdot 1 = f_a(x_1,x_2)\mu_{x_2 \to f_a}(x_2) \mu_{x_1 \to f_a}(x_1) \\
+	&= f_a(x_1, x_2) \prod\limits_{i \in ne(f_a)} \mu_{x_i \to f_a}(x_s)
+\end{split}
 \end{align}
 
 \end{document}
