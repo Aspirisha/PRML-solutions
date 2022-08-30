@@ -16,6 +16,10 @@
 
 \newcommand\independent{\protect\mathpalette{\protect\independenT}{\perp}}
 \def\independenT#1#2{\mathrel{\rlap{$#1#2$}\mkern2mu{#1#2}}}
+
+\DeclareMathOperator*{\argmin}{argmin} % no space, limits underneath in displays
+\DeclareMathOperator*{\argmax}{argmax} % no space, limits underneath in displays
+
 \begin{document}
 
 \section*{Problem 3.2}
@@ -501,5 +505,81 @@ The same goes for $x_3$:
 	&= f_a(x_1, x_2) \prod\limits_{i \in ne(f_a)} \mu_{x_i \to f_a}(x_s)
 \end{split}
 \end{align}
+
+\section*{Problem 8.26}
+%Consider a tree-structured factor graph over discrete variables, and suppose we wish to evaluate the joint distribution p(xa, xb) associated with two variables xa and xb that do not belong to a common factor. Define a procedure for using the sum- product algorithm to evaluate this joint distribution in which one of the variables is successively clamped to each of its allowed values.
+
+We just need to update the formulas for $\mu$ functions a little bit, so that they now become functions of two variables. We start with setting $x_a$ as a root, and keeping in mind that now we do not marginalize over $x_b$. Now consider $\mu_{f_s\to x}$: there are two possibilities here. The first is that $x_b \in \{x_1,...,x_m\}$, i.e. it is one of the variables connected to $f_s$, the other is that $x_b$ is not in this set:
+
+\begin{align}
+	\begin{split}
+		\mu_{f_s \to x}(x, x_b) &= \sum\limits_{X_s \backslash x_b} f_s(x,x_1,...,x_M)G_1 (x_1,X_{s_1})...G_M (x_M,X_{s_M}) = \\
+		&= \sum\limits_{x_1...x_M \backslash x_b}f_s(x_1...x_M)\prod\limits_{m}\mu_{x_m \to f_s}(x, x_b)
+	\end{split}
+& x_b \in \{x_1...x_M\}\\
+\begin{split}
+	\mu_{f_s \to x}(x, x_b) &= \sum\limits_{X_s \backslash x_b} f_s(x,x_1,...,x_M)G_1 (x_1,X_{s_1})...G_M (x_M,X_{s_M}) = \\
+	&= \sum\limits_{x_1...x_M}f_s(x_1...x_m))\prod\limits_{m}\mu_{x_m \to f_s}(x, x_b)
+\end{split}
+& x_b \notin  \{x_1...x_M\}
+\end{align}
+ 
+Let us now consider $\mu_{x_m \to f_s}$: we have not much difference in here
+
+\begin{align}
+	\begin{split}
+		\mu_{x_m \to f_s}(x, x_b) = \prod\limits_{l \in ne(x_m) \backslash f_s}\mu_{f_l \to x_m}(x_m, x_b)
+	\end{split}
+\end{align}
+
+How do we use these formulas? We now perform the computations using them for each of the values $x_b$ can take: unfortunately though, it means the algorithm becomes less efficient, since we need to runs standard sum-product algorithm multiple times.
+
+
+\section*{Problem 8.27}
+%Consider two discrete variables x and y each having three possible states, for example x, y ∈ {0, 1, 2}. Construct a joint distribution p(x, y) over these variables having the property that the value x that maximizes the marginal p(x), along with the value y that maximizes the marginal p(y), together have probability zero under the joint distribution, so that p(x, y) = 0.
+
+Let us suppose $\hat x =0$ and $\hat y = 0$. We want to construct such a distribution, that $p(\hat x, \hat y) = 0$, with $\hat x = \argmax\limits_x \sum\limits_y p(x, y)$, $\hat y = \argmax\limits_y\sum\limits_x p(x, y)$
+
+We have a set of inequalities we need to satisfy (remember $p(0,0) = 0$ so we omit it):
+\begin{align}
+	p(1, 0) + p(2, 0) > p(0,1) + p(1,1) + p(2,1)\\
+	p(1, 0) + p(2, 0) > p(0,2) + p(1,2) + p(2,2)\\
+	p(0,1) + p(0,2) > p(1,0) + p(1,1) + p(1,2)\\
+	p(0,1) + p(0,2) > p(2,0) + p(2,1) + p(2,2)
+\end{align}
+
+We can start by trying to set all the probabilities on the left to be equal, and to sum up to $1$, getting the following table:
+\begin{table}[h]
+	\begin{tabular}{| l | c | c|}
+		\hline
+		x  & y & p(x, y) \\\hline
+		0 & 0 & 0  \\\hline
+		0 & 1 & 0.25  \\\hline
+		0 & 2 & 0.25  \\\hline
+		1 & 0 & 0.25  \\\hline
+		1 & 1 & 0  \\\hline
+		1 & 2 & 0  \\\hline
+		2 & 0 & 0.25  \\\hline
+		2 & 1 & 0  \\\hline
+		2 & 2 & 0  \\\hline
+	\end{tabular}
+\end{table}
+
+In short, we get $p(x,y) = 0.25$ if either $x$ or $y$ is zero, but not both, and 0 otherwise. With this definition, $p(\hat x) = 0.5$ and $p(\hat y) = 0.5$, $p(y=1) = p(y=2) = p(x=1) = p(x=2) = 0.25$.
+
+
+\section*{Problem 8.28}
+%The concept of a pending message in the sum-product algorithm for a factor graph was defined in Section 8.4.7. Show that if the graph has one or more cycles, there will always be at least one pending message irrespective of how long the algorithm runs.
+
+We can simply prove using induction that at every step of the algorithm, there will exist a variable or a factor belonging to a loop, which has a pending message. 
+
+The induction base is obvious: when we initialize an algorithm, all the nodes have pending messages, since we suppose unit message was sent over all the links. 
+
+Now, suppose after step $n$ there is a pending message from node $a$ to node $b$, where $a$ and $b$ lie on the loop. If step $n+1$ does not send this message, we still have this pending message after the $n+1$ step. Otherwise, node $b$ has received a new message, and so it now has pending message which it should send further along the loop, so we again have a pending message after the $n+1$ step.
+
+
+\section*{Problem 8.29}
+This can be done using induction as well. Suppose the statement is true for all tree-structured graph containing $\le n$ nodes. To prove the statement for graph with $n$ nodes, let us consider any of it's leaves, and compute it's message towards the parent. This can be easily done using 8.70, 8.71. After that, all the messages are passed in a graph containing $n-1$ nodes, so there will eventually be no pending messages, except the message over the link to the selected leaf node. After we pass this message over the link, no new messages from the node will emerge (since formulas 8.70, 8.71 do not depend on messages which the leaf node has received), and so there will be no more pending messages in the graph.
+
 
 \end{document}
